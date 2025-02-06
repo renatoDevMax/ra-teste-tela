@@ -53,9 +53,6 @@ export default function ARScene() {
               margin: 0;
               padding: 0;
               overflow: hidden;
-              position: fixed;
-              width: 100%;
-              height: 100%;
             }
             .a-canvas {
               width: 100vw !important;
@@ -64,20 +61,11 @@ export default function ARScene() {
             .arjs-video {
               position: fixed !important;
               top: 0 !important;
-              left: 50% !important;
-              transform: translate(-50%, 0) !important;
+              left: 0 !important;
+              width: 100vw !important;
               height: 100vh !important;
-              width: calc(100vh * 1.333) !important;
-              max-width: none !important;
               object-fit: cover !important;
-            }
-            @media (orientation: portrait) {
-              .arjs-video {
-                width: 100vw !important;
-                height: calc(100vw * 1.333) !important;
-                top: 50% !important;
-                transform: translate(-50%, -50%) !important;
-              }
+              z-index: -1;
             }
           `;
           document.head.appendChild(style);
