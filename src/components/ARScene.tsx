@@ -67,7 +67,15 @@ export default function ARScene() {
               height: 100vh !important;
               width: calc(100vh * 1.333) !important;
               max-width: none !important;
-              object-fit: fill !important;
+              object-fit: cover !important;
+            }
+            @media (max-width: 767px) and (orientation: portrait) {
+              .arjs-video {
+                width: 100vw !important;
+                height: calc(100vw * 1.333) !important;
+                left: 0 !important;
+                transform: none !important;
+              }
             }
           `;
           document.head.appendChild(style);
