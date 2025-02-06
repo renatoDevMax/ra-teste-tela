@@ -58,11 +58,14 @@ export default function ARScene() {
             }
             .arjs-video {
               position: fixed !important;
-              top: 0 !important;
-              left: 0 !important;
-              width: 100vw !important;
-              height: 100vh !important;
-              object-fit: contain !important;
+              top: 50% !important;
+              left: 50% !important;
+              transform: translate(-50%, -50%) !important;
+              min-width: 100% !important;
+              min-height: 100% !important;
+              width: auto !important;
+              height: auto !important;
+              object-fit: none !important;
               z-index: -1;
             }
           `;
