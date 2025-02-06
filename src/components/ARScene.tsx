@@ -9,6 +9,8 @@ export default function ARScene() {
     if (sceneInitialized.current) return;
     sceneInitialized.current = true;
 
+    let observer: MutationObserver | null = null;
+
     const loadAR = async () => {
       try {
         // Remover scripts existentes primeiro
@@ -129,7 +131,7 @@ export default function ARScene() {
           );
 
           // Adiciona um observer para garantir que os estilos sejam mantidos
-          const observer = new MutationObserver((mutations) => {
+          observer = new MutationObserver((mutations) => {
             const video = document.querySelector(".arjs-video");
             if (video instanceof HTMLVideoElement) {
               if (window.matchMedia("(orientation: portrait)").matches) {
@@ -183,7 +185,9 @@ export default function ARScene() {
     loadAR();
 
     return () => {
-      observer.disconnect(); // Limpa o observer quando o componente for desmontado
+      if (observer) {
+        observer.disconnect();
+      }
       window.removeEventListener("resize", () => {});
       const scripts = document.querySelectorAll("script[data-ar-script]");
       scripts.forEach((script) => script.remove());
