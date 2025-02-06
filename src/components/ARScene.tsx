@@ -61,11 +61,11 @@ export default function ARScene() {
               top: 50% !important;
               left: 50% !important;
               transform: translate(-50%, -50%) !important;
-              min-width: 100% !important;
-              min-height: 100% !important;
-              width: auto !important;
-              height: auto !important;
-              object-fit: none !important;
+              max-width: 100vw !important;
+              max-height: 100vh !important;
+              width: 100% !important;
+              height: 100% !important;
+              object-fit: scale-down !important;
               z-index: -1;
             }
           `;
