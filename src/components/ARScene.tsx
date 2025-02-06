@@ -58,15 +58,14 @@ export default function ARScene() {
             }
             .arjs-video {
               position: fixed !important;
-              top: 50% !important;
-              left: 50% !important;
-              transform: translate(-50%, -50%) !important;
-              max-width: 100vw !important;
-              max-height: 100vh !important;
-              width: 100% !important;
-              height: 100% !important;
-              object-fit: scale-down !important;
+              top: 0 !important;
+              left: 0 !important;
+              width: 100vw !important;
+              height: 100vh !important;
+              object-fit: contain !important;
+              transform: none !important;
               z-index: -1;
+              background: black;
             }
           `;
           document.head.appendChild(style);
@@ -145,6 +144,9 @@ export default function ARScene() {
         height: "100%",
         zIndex: 1000,
         overflow: "hidden",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
       }}
     />
   );
