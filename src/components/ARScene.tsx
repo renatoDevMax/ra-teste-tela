@@ -128,12 +128,50 @@ export default function ARScene() {
             console.log("Marker lost")
           );
 
+          // Adiciona um observer para garantir que os estilos sejam mantidos
+          const observer = new MutationObserver((mutations) => {
+            const video = document.querySelector(".arjs-video");
+            if (video instanceof HTMLVideoElement) {
+              if (window.matchMedia("(orientation: portrait)").matches) {
+                video.style.width = "100vw";
+                video.style.height = `${window.innerWidth * 1.333}px`;
+                video.style.top = "50%";
+                video.style.left = "50%";
+                video.style.transform = "translate(-50%, -50%)";
+              } else {
+                video.style.width = `${window.innerHeight * 1.333}px`;
+                video.style.height = `${window.innerHeight}px`;
+                video.style.top = "0";
+                video.style.left = "50%";
+                video.style.transform = "translate(-50%, 0)";
+              }
+            }
+          });
+
+          observer.observe(document.body, {
+            childList: true,
+            subtree: true,
+            attributes: true,
+            attributeFilter: ["style"],
+          });
+
           // Ajustar quando a orientação mudar
           window.addEventListener("resize", () => {
             const video = document.querySelector(".arjs-video");
             if (video instanceof HTMLVideoElement) {
-              video.style.width = `${window.innerHeight * 1.333}px`;
-              video.style.height = `${window.innerHeight}px`;
+              if (window.matchMedia("(orientation: portrait)").matches) {
+                video.style.width = "100vw";
+                video.style.height = `${window.innerWidth * 1.333}px`;
+                video.style.top = "50%";
+                video.style.left = "50%";
+                video.style.transform = "translate(-50%, -50%)";
+              } else {
+                video.style.width = `${window.innerHeight * 1.333}px`;
+                video.style.height = `${window.innerHeight}px`;
+                video.style.top = "0";
+                video.style.left = "50%";
+                video.style.transform = "translate(-50%, 0)";
+              }
             }
           });
         }
@@ -145,6 +183,7 @@ export default function ARScene() {
     loadAR();
 
     return () => {
+      observer.disconnect(); // Limpa o observer quando o componente for desmontado
       window.removeEventListener("resize", () => {});
       const scripts = document.querySelectorAll("script[data-ar-script]");
       scripts.forEach((script) => script.remove());
