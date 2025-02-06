@@ -9,8 +9,6 @@ export default function ARScene() {
     if (sceneInitialized.current) return;
     sceneInitialized.current = true;
 
-    let observer: MutationObserver | null = null;
-
     const loadAR = async () => {
       try {
         // Remover scripts existentes primeiro
@@ -64,7 +62,7 @@ export default function ARScene() {
               left: 0 !important;
               width: 100vw !important;
               height: 100vh !important;
-              object-fit: cover !important;
+              object-fit: contain !important;
               z-index: -1;
             }
           `;
@@ -103,11 +101,6 @@ export default function ARScene() {
           const scene = container.querySelector("a-scene");
           scene?.addEventListener("loaded", () => {
             console.log("Scene loaded");
-            const video = document.querySelector(".arjs-video");
-            if (video instanceof HTMLVideoElement) {
-              video.style.width = `${window.innerHeight * 1.333}px`;
-              video.style.height = `${window.innerHeight}px`;
-            }
           });
 
           const marker = container.querySelector("a-marker");
@@ -117,53 +110,6 @@ export default function ARScene() {
           marker?.addEventListener("markerLost", () =>
             console.log("Marker lost")
           );
-
-          // Adiciona um observer para garantir que os estilos sejam mantidos
-          observer = new MutationObserver((mutations) => {
-            const video = document.querySelector(".arjs-video");
-            if (video instanceof HTMLVideoElement) {
-              if (window.matchMedia("(orientation: portrait)").matches) {
-                video.style.width = "100vw";
-                video.style.height = `${window.innerWidth * 1.333}px`;
-                video.style.top = "50%";
-                video.style.left = "50%";
-                video.style.transform = "translate(-50%, -50%)";
-              } else {
-                video.style.width = `${window.innerHeight * 1.333}px`;
-                video.style.height = `${window.innerHeight}px`;
-                video.style.top = "0";
-                video.style.left = "50%";
-                video.style.transform = "translate(-50%, 0)";
-              }
-            }
-          });
-
-          observer.observe(document.body, {
-            childList: true,
-            subtree: true,
-            attributes: true,
-            attributeFilter: ["style"],
-          });
-
-          // Ajustar quando a orientação mudar
-          window.addEventListener("resize", () => {
-            const video = document.querySelector(".arjs-video");
-            if (video instanceof HTMLVideoElement) {
-              if (window.matchMedia("(orientation: portrait)").matches) {
-                video.style.width = "100vw";
-                video.style.height = `${window.innerWidth * 1.333}px`;
-                video.style.top = "50%";
-                video.style.left = "50%";
-                video.style.transform = "translate(-50%, -50%)";
-              } else {
-                video.style.width = `${window.innerHeight * 1.333}px`;
-                video.style.height = `${window.innerHeight}px`;
-                video.style.top = "0";
-                video.style.left = "50%";
-                video.style.transform = "translate(-50%, 0)";
-              }
-            }
-          });
         }
       } catch (error) {
         console.error("Error initializing AR:", error);
@@ -173,9 +119,6 @@ export default function ARScene() {
     loadAR();
 
     return () => {
-      if (observer) {
-        observer.disconnect();
-      }
       window.removeEventListener("resize", () => {});
       const scripts = document.querySelectorAll("script[data-ar-script]");
       scripts.forEach((script) => script.remove());
